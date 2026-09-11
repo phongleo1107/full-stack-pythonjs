@@ -1,18 +1,18 @@
 # PRD — Course Registration App MVP
 
-## 1. Mục tiêu
+## 1. Objective
 
-Xây dựng một web đăng ký môn học đơn giản để học và thực hành:
+Build a simple course registration web application to learn and practice:
 
 **React.js → HTTP/REST API → FastAPI → SQLAlchemy → PostgreSQL**
 
-MVP **không có User/Authentication**.
+The MVP **does not include Users or Authentication**.
 
-Mỗi thao tác trên UI sẽ đi qua API và được lưu/truy vấn từ PostgreSQL.
+Every UI action goes through the API and reads from or writes to PostgreSQL.
 
-### Mục tiêu chính
+### Main Goal
 
-Hiểu được full-stack data flow:
+Understand the full-stack data flow:
 
 ```text
 React
@@ -53,7 +53,7 @@ UI
 
 # 3. MVP Scope
 
-MVP chỉ có **một trang chính**:
+The MVP has **one main page**:
 
 ```text
 Course Registration
@@ -65,7 +65,7 @@ Course Registration
 └── Registered Classes
 ```
 
-Không có:
+Not included:
 
 * Login
 * User
@@ -73,7 +73,7 @@ Không có:
 * Authorization
 * Admin
 * Payment
-* Notification
+* Notifications
 * AI
 * WebSocket
 * Redis
@@ -84,17 +84,17 @@ Không có:
 
 # 4. Core Features
 
-## 4.1. Xem danh sách lớp học
+## 4.1. View Available Classes
 
-React gọi:
+React calls:
 
 ```http
 GET /classes
 ```
 
-FastAPI lấy dữ liệu từ PostgreSQL và trả JSON.
+FastAPI retrieves data from PostgreSQL and returns JSON.
 
-Ví dụ:
+Example:
 
 ```json
 [
@@ -112,17 +112,17 @@ Ví dụ:
 ]
 ```
 
-React hiển thị:
+React displays:
 
-| Chọn | Môn học              | TC | Lớp        | Giáo viên    | Sĩ số | Đã ĐK | Học phí | Lịch    |
-| ---- | -------------------- | -: | ---------- | ------------ | ----: | ----: | ------: | ------- |
-| □    | Advanced Programming |  3 | INT2204-01 | Nguyen Van A |    60 |    35 |    1.2M | Mon 1-3 |
+| Select | Course               | Credits | Class      | Teacher      | Capacity | Registered | Tuition | Schedule |
+| ------ | -------------------- | ------: | ---------- | ------------ | -------: | ---------: | ------: | -------- |
+| □      | Advanced Programming |       3 | INT2204-01 | Nguyen Van A |       60 |         35 |    1.2M | Mon 1-3  |
 
 ---
 
 # 5. Database
 
-MVP chỉ cần **2 bảng**.
+The MVP only needs **2 tables**.
 
 ## Courses
 
@@ -133,7 +133,7 @@ courses
 └── credits
 ```
 
-Ví dụ:
+Example:
 
 ```text
 1 | Advanced Programming | 3
@@ -163,9 +163,9 @@ Course
   └──< Classes
 ```
 
-Một Course có thể có nhiều Class.
+One Course can have multiple Classes.
 
-Ví dụ:
+Example:
 
 ```text
 Advanced Programming
@@ -177,13 +177,13 @@ Advanced Programming
 
 ---
 
-# 6. Registration trong MVP
+# 6. Registration in the MVP
 
-Không cần `Users`.
+No `Users` table is required.
 
-Không cần bảng `Registrations` ở phiên bản đầu nếu mục tiêu chỉ là học CRUD + data flow.
+No `Registrations` table is required in the first version if the goal is to learn CRUD and data flow.
 
-Thay vào đó, frontend có thể giữ danh sách các lớp đã chọn trong state.
+Instead, the frontend can keep the list of selected classes in React state.
 
 ```text
 React State
@@ -217,43 +217,43 @@ React
 Update UI
 ```
 
-> Nếu muốn **registration phải tồn tại trong database** ngay từ MVP, có thể thêm bảng `Registrations` sau khi CRUD cơ bản chạy ổn. Không nên bắt đầu với nó nếu mục tiêu hiện tại là hiểu kiến trúc.
+> If registration needs to be persisted in the database during the MVP, a `Registrations` table can be added after the basic CRUD flow is working. It should not be introduced at the beginning if the current goal is to understand the architecture.
 
 ---
 
 # 7. API
 
-MVP chỉ cần các API sau.
+The MVP only needs the following APIs.
 
 ## Courses
 
-### Get courses
+### Get Courses
 
 ```http
 GET /courses
 ```
 
-Lấy danh sách môn học.
+Returns a list of courses.
 
 ---
 
 ## Classes
 
-### Get classes
+### Get Classes
 
 ```http
 GET /classes
 ```
 
-Lấy danh sách lớp học.
+Returns a list of classes.
 
-### Get one class
+### Get One Class
 
 ```http
 GET /classes/{id}
 ```
 
-Lấy thông tin một lớp.
+Returns information about a specific class.
 
 ---
 
@@ -276,12 +276,12 @@ Request:
 FastAPI:
 
 ```text
-1. Nhận class_id
-2. Kiểm tra class tồn tại
-3. Kiểm tra còn chỗ
-4. Tăng registered
-5. Commit database
-6. Trả JSON
+1. Receive class_id
+2. Check whether the class exists
+3. Check whether there is available capacity
+4. Increase registered count
+5. Commit to the database
+6. Return JSON
 ```
 
 Response:
@@ -300,7 +300,7 @@ Response:
 DELETE /registrations/{class_id}
 ```
 
-FastAPI giảm số lượng `registered`.
+FastAPI decreases the `registered` count.
 
 ---
 
@@ -340,7 +340,7 @@ Total Credits: 3
 
 # 9. React Components
 
-Không cần component architecture phức tạp.
+No complex component architecture is needed.
 
 ```text
 App
@@ -354,20 +354,20 @@ App
 └── Summary
 ```
 
-React chịu trách nhiệm:
+React is responsible for:
 
-* Hiển thị dữ liệu
-* Quản lý UI state
-* Nhận input
-* Gửi HTTP request
-* Nhận JSON
-* Cập nhật UI
+* Displaying data
+* Managing UI state
+* Receiving user input
+* Sending HTTP requests
+* Receiving JSON
+* Updating the UI
 
 ---
 
 # 10. Backend Structure
 
-Có thể bắt đầu đơn giản:
+Start simple:
 
 ```text
 backend/
@@ -382,9 +382,9 @@ backend/
     └── registrations.py
 ```
 
-Không cần architecture quá phức tạp ở MVP.
+No complex architecture is needed for the MVP.
 
-Mục tiêu là hiểu:
+The goal is to understand:
 
 ```text
 Route
@@ -412,7 +412,7 @@ Course
 Class
 ```
 
-`Class` có:
+`Class` has:
 
 ```text
 course_id → courses.id
@@ -507,6 +507,8 @@ SET registered = registered - 1
         ↓
 PostgreSQL
         ↓
+FastAPI
+        ↓
 JSON
         ↓
 React
@@ -518,17 +520,17 @@ Update UI
 
 # 13. MVP Learning Goals
 
-Sau khi hoàn thành MVP, cần hiểu được:
+After completing the MVP, you should understand:
 
 ### React
 
-* Component
+* Components
 * Props
 * State
 * Event handling
 * `useEffect`
 * Fetch API
-* Render data từ API
+* Rendering data from an API
 
 ### HTTP / REST
 
@@ -537,14 +539,14 @@ Sau khi hoàn thành MVP, cần hiểu được:
 * DELETE
 * Request body
 * Response
-* Status code
+* Status codes
 * JSON
 
 ### FastAPI
 
 * Routes
 * Path parameters
-* Request body
+* Request bodies
 * Pydantic schemas
 * Response models
 * Basic validation
@@ -552,11 +554,11 @@ Sau khi hoàn thành MVP, cần hiểu được:
 
 ### SQLAlchemy
 
-* Model
-* Column
-* Foreign key
-* Relationship
-* Query
+* Models
+* Columns
+* Foreign keys
+* Relationships
+* Queries
 * Insert
 * Update
 * Delete
@@ -564,9 +566,9 @@ Sau khi hoàn thành MVP, cần hiểu được:
 
 ### PostgreSQL
 
-* Table
-* Primary key
-* Foreign key
+* Tables
+* Primary keys
+* Foreign keys
 * CRUD
 * `SELECT`
 * `INSERT`
@@ -574,9 +576,9 @@ Sau khi hoàn thành MVP, cần hiểu được:
 * `DELETE`
 * Relationships
 
-### Full-stack
+### Full-Stack
 
-Quan trọng nhất:
+Most importantly:
 
 ```text
 Input
@@ -608,23 +610,23 @@ Output
 
 # 14. Definition of Done
 
-MVP được xem là hoàn thành khi có thể:
+The MVP is considered complete when you can:
 
-* [ ] Hiển thị classes từ PostgreSQL lên React.
-* [ ] Tạo course/class trong database.
-* [ ] React gọi được FastAPI.
-* [ ] FastAPI query được PostgreSQL.
-* [ ] Register một class.
-* [ ] Unregister một class.
-* [ ] `registered` được cập nhật trong database.
-* [ ] React cập nhật UI sau mỗi request.
-* [ ] Hiểu được dữ liệu đi qua từng layer.
+* [ ] Display classes from PostgreSQL in React.
+* [ ] Create courses/classes in the database.
+* [ ] React can communicate with FastAPI.
+* [ ] FastAPI can query PostgreSQL.
+* [ ] Register for a class.
+* [ ] Unregister from a class.
+* [ ] Update `registered` in the database.
+* [ ] Update the React UI after each request.
+* [ ] Understand how data flows through each layer.
 
 ---
 
-# 15. Sau MVP
+# 15. After the MVP
 
-Chỉ sau khi MVP hoạt động ổn định mới mở rộng:
+Only expand the project after the MVP is working reliably:
 
 ```text
 MVP
@@ -646,4 +648,4 @@ MVP
  └── Deployment
 ```
 
-Authentication là **phase 2**, không phải một phần của MVP.
+Authentication is **Phase 2**, not part of the MVP.
