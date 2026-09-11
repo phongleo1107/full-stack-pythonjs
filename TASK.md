@@ -155,12 +155,6 @@ full-stack-pythonjs/
 └── README.md
 ```
 
-## Database folder?
-
-**Do not create a separate top-level `database/` folder yet.**
-
-PostgreSQL is the database service. The code that connects to it belongs to the backend.
-
 For the MVP:
 
 ```text
@@ -179,7 +173,6 @@ backend/
 
 or a dedicated SQL/migration directory.
 
-Do **not** store PostgreSQL's actual data files inside the repository.
 
 ---
 
