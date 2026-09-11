@@ -16,9 +16,10 @@ class Base(DeclarativeBase):
 class Courses(Base):
     __tablename__ = "courses"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, unique=True)
     credits: Mapped[int] = mapped_column(Integer)
+
 
 class Classes(Base):
     __tablename__ = "classes"
@@ -28,10 +29,11 @@ class Classes(Base):
         ForeignKey("courses.id")
     )
 
-    class_code: Mapped[int] = mapped_column(String, unique=True)
+    class_code: Mapped[str] = mapped_column(String, unique=True)
     teacher: Mapped[str] = mapped_column(String)
     capacity: Mapped[int] = mapped_column(Integer)
     registered: Mapped[int] = mapped_column(Integer)
-    tuition: Mapped[int] = mapped_column(String)
-    schedule: Mapped[int] = mapped_column(String)
+    tuition: Mapped[int] = mapped_column(Integer)
+    currency: Mapped[str] = mapped_column(String)
+    schedule: Mapped[str] = mapped_column(String)
 
